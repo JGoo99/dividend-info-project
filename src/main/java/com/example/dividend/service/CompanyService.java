@@ -30,7 +30,7 @@ public class CompanyService {
     return this.storeCompanyAndDividend(ticker);
   }
 
-  private Company storeCompanyAndDividend(String ticker) {
+  public Company storeCompanyAndDividend(String ticker) {
     Company company = this.yahooFinanceScraper.scrapCompanyByTicker(ticker);
     if (ObjectUtils.isEmpty(company)) {
       throw new RuntimeException("failed to scrap company by ticker -> " + ticker);

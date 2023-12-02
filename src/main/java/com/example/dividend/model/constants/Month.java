@@ -1,7 +1,6 @@
 package com.example.dividend.model.constants;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @AllArgsConstructor
 public enum Month {

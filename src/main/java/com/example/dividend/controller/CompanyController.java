@@ -33,6 +33,7 @@ public class CompanyController {
   public ResponseEntity<?> addCompany(
     @Schema(name = "회사정보", implementation = Company.class, example = "MMM")
     @RequestBody Company request) {
+
     String ticker = request.getTicker().trim();
     if (ObjectUtils.isEmpty(ticker)) {
       throw new RuntimeException("ticker is empty");
