@@ -1,4 +1,4 @@
-package com.example.dividend.dto;
+package com.example.dividend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
