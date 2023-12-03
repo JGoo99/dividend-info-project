@@ -3,9 +3,15 @@ POST http://localhost:8080/company
 Content-Type: application/json
 
 {
-  "ticker": "DIA"
+  "ticker": "NN"
 }
 
 ### get all companies
-GET http://localhost:8080/company?size=5&page=1
+GET http://localhost:8080/company?size=5&page=0
 Accept: application/json
+
+### get dividend by company name
+GET http://localhost:8080/finance/dividend/NIKE, Inc.
+
+### get company names by autocomplete
+GET http://localhost:8080/company/autocomplete?keyword=A
