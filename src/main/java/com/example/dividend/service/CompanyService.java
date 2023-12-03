@@ -74,6 +74,12 @@ public class CompanyService {
     this.trie.put(keyword, null);
   }
 
+  public List<String> autocomplete(String keyword) {
+    return (List<String>) this.trie.prefixMap(keyword).keySet().stream()
+      .limit(10)
+      .collect(Collectors.toList());
+  }
+
   public void deleteAutocompleteKeyword(String keyword) {
     this.trie.remove(keyword);
   }
