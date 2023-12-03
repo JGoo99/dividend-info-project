@@ -1,11 +1,14 @@
 package com.example.dividend.controller;
 
 import com.example.dividend.model.Company;
+import com.example.dividend.persist.entity.CompanyEntity;
 import com.example.dividend.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +27,12 @@ public class CompanyController {
   }
 
   @GetMapping
-  public ResponseEntity<?> searchCompany() {
-    return null;
+  @Operation(summary = "get company list", description = "회사 정보를 불러온다.")
+  public ResponseEntity<?> searchCompany(
+    @Schema(name = "페이징", implementation = Pageable.class, example = "size=5&page=0")
+    final Pageable pageable) {
+    Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
+    return ResponseEntity.ok(companies);
   }
 
   @PostMapping

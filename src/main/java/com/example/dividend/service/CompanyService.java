@@ -8,6 +8,8 @@ import com.example.dividend.persist.repository.CompanyRepository;
 import com.example.dividend.persist.repository.DividendRepository;
 import com.example.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,7 +32,11 @@ public class CompanyService {
     return this.storeCompanyAndDividend(ticker);
   }
 
-  public Company storeCompanyAndDividend(String ticker) {
+  public Page<CompanyEntity> getAllCompany(Pageable pageable) {
+    return this.companyRepository.findAll(pageable);
+  }
+
+  private Company storeCompanyAndDividend(String ticker) {
     Company company = this.yahooFinanceScraper.scrapCompanyByTicker(ticker);
     if (ObjectUtils.isEmpty(company)) {
       throw new RuntimeException("failed to scrap company by ticker -> " + ticker);
