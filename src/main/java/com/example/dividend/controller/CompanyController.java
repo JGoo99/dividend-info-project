@@ -36,7 +36,7 @@ public class CompanyController {
   }
 
   @PostMapping
-  @Operation(summary = "add company data", description = "회사 정보를 저장한다.")
+  @Operation(summary = "add company and dividend data", description = "회사와 배당금 정보를 저장한다.")
   public ResponseEntity<?> addCompany(
     @Schema(name = "회사정보", implementation = Company.class, example = "MMM")
     @RequestBody Company request) {
