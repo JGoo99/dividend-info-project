@@ -22,7 +22,10 @@ public class CompanyController {
   private final CompanyService companyService;
 
   @GetMapping("/autocomplete")
-  public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
+  @Operation(summary = "autocomplete search", description = "회사명 자동 완성 검색 기능이다.")
+  public ResponseEntity<?> autocomplete(
+    @Schema(name = "키워드(접두사)", example = "CO")
+    @RequestParam String keyword) {
 //    var companyNames = this.companyService.autocomplete(keyword);
     var companyNames =
       this.companyService.getCompanyNamesByKeyword(keyword);
