@@ -17,3 +17,7 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
     open-in-view: false
+
+scheduler:
+  scrap:
+    yahoo: "0 0 0 * * *"

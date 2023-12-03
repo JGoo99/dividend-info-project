@@ -2,10 +2,7 @@ package com.example.dividend.persist.entity;
 
 import com.example.dividend.model.Dividend;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,6 +13,13 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @NoArgsConstructor
+@Table(
+  uniqueConstraints = {
+    @UniqueConstraint(
+      columnNames = {"companyId", "date"}
+    )
+  }
+)
 @Schema(description = "Dividend DB")
 public class DividendEntity {
 
