@@ -8,17 +8,21 @@ import com.example.dividend.persist.repository.CompanyRepository;
 import com.example.dividend.persist.repository.DividendRepository;
 import com.example.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class CompanyService {
 
+  private final Trie trie;
   public final Scraper yahooFinanceScraper;
 
   private final CompanyRepository companyRepository;
@@ -53,5 +57,24 @@ public class CompanyService {
     this.dividendRepository.saveAll(dividendEntities);
 
     return company;
+  }
+
+  public List<String> getCompanyNamesByKeyword(String keyword) {
+    Pageable limit = PageRequest.of(0, 10);
+
+    Page<CompanyEntity> companyEntities =
+      this.companyRepository.findByNameStartingWithIgnoreCase(keyword, limit);
+
+    return companyEntities.stream()
+      .map(e -> e.getName())
+      .collect(Collectors.toList());
+  }
+
+  public void addAutocompleteKeyword(String keyword) {
+    this.trie.put(keyword, null);
+  }
+
+  public void deleteAutocompleteKeyword(String keyword) {
+    this.trie.remove(keyword);
   }
 }
