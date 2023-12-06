@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,16 +33,18 @@ public class CompanyController {
     return ResponseEntity.ok(companyNames);
   }
 
-  @GetMapping
+  @GetMapping("/search")
+  @PreAuthorize("hasRole('READ')")
   @Operation(summary = "get company list", description = "회사 정보를 불러온다.")
   public ResponseEntity<?> searchCompany(
-    @Schema(name = "페이징", implementation = Pageable.class, example = "size=5&page=0")
+    @Schema(name = "페이징", implementation = Pageable.class, example = "?size=5&page=0")
     final Pageable pageable) {
     Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
     return ResponseEntity.ok(companies);
   }
 
-  @PostMapping
+  @PostMapping("/add")
+  @PreAuthorize("hasRole('WRITE')")
   @Operation(summary = "add company and dividend data", description = "회사와 배당금 정보를 저장한다.")
   public ResponseEntity<?> addCompany(
     @Schema(name = "회사정보", implementation = Company.class, example = "MMM")

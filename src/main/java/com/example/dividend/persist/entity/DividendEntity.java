@@ -20,21 +20,16 @@ import java.time.LocalDateTime;
     )
   }
 )
-@Schema(description = "Dividend DB")
 public class DividendEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Schema(description = "배당금 식별 아이디", example = "1")
   private Long dividendId;
 
-  @Schema(description = "회사 식별 아이디", example = "1")
   private Long companyId;
 
-  @Schema(description = "배당금 지급 시점", example = "2023-12-03T00:00:00")
   private LocalDateTime date;
 
-  @Schema(description = "배당금액", example = "0.25")
   private String dividend;
 
   public DividendEntity(Long companyId, Dividend dividend) {
