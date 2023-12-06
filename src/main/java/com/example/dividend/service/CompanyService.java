@@ -83,4 +83,15 @@ public class CompanyService {
   public void deleteAutocompleteKeyword(String keyword) {
     this.trie.remove(keyword);
   }
+
+  public String deleteCompany(String ticker) {
+    CompanyEntity companyEntity = this.companyRepository.findByTicker(ticker)
+      .orElseThrow(() -> new RuntimeException("Not Found Company -> " + ticker));
+
+    this.dividendRepository.deleteAllByCompanyId(companyEntity.getCompanyId());
+    this.companyRepository.delete(companyEntity);
+
+    this.deleteAutocompleteKeyword(companyEntity.getName());
+    return companyEntity.getName();
+  }
 }

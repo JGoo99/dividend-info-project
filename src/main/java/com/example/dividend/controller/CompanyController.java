@@ -1,12 +1,14 @@
 package com.example.dividend.controller;
 
 import com.example.dividend.model.Company;
+import com.example.dividend.model.constants.CacheKey;
 import com.example.dividend.persist.entity.CompanyEntity;
 import com.example.dividend.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyController {
 
   private final CompanyService companyService;
+  private final CacheManager cacheManager;
 
   @GetMapping("/autocomplete")
   @Operation(summary = "autocomplete search", description = "회사명 자동 완성 검색 기능이다.")
@@ -60,8 +63,18 @@ public class CompanyController {
     return ResponseEntity.ok(company);
   }
 
-  @DeleteMapping
-  public ResponseEntity<?> deleteCompany(@RequestParam String ticker) {
-    return null;
+  @DeleteMapping("/{ticker}")
+  @PreAuthorize("hasRole('WRITE')")
+  @Operation(summary = "delete company and dividend data", description = "회사와 배당금 정보를 삭제한다.")
+  public ResponseEntity<?> deleteCompany(
+    @Schema(name = "회사코드", example = "MMM")
+    @PathVariable String ticker) {
+    String companyName = this.companyService.deleteCompany(ticker);
+    this.clearFinanceCache(companyName);
+    return ResponseEntity.ok(companyName);
+  }
+
+  public void clearFinanceCache(String companyName) {
+    this.cacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName);
   }
 }
