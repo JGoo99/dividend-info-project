@@ -24,7 +24,6 @@ public class FinanceController {
   public ResponseEntity<?> searchFinance(
     @Schema(name = "회사명", example = "3M Company")
     @PathVariable String companyName) {
-
     var dividend = this.financeService.getDividendByCompanyName(companyName);
     return ResponseEntity.ok(dividend);
   }

@@ -1,7 +1,6 @@
 package com.example.dividend.persist.entity;
 
 import com.example.dividend.model.Dividend;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
   }
 )
 public class DividendEntity {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long dividendId;

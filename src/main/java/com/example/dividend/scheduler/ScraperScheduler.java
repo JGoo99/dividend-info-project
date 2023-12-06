@@ -48,8 +48,7 @@ public class ScraperScheduler {
               this.dividendRepository.save(e);
             }
           }
-        )
-      ;
+        );
 
       try {
         Thread.sleep(3000);

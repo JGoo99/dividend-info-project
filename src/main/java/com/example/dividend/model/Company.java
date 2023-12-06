@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "회사 정보")
 public class Company {
-
   @Schema(description = "회사 코드", example = "COKE")
   private String ticker;
 

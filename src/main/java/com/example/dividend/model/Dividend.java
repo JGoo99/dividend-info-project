@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Schema(description = "배당금 정보")
 public class Dividend {
-
   @JsonSerialize(using = LocalDateTimeSerializer.class)
   @JsonDeserialize(using = LocalDateDeserializer.class)
   @Schema(description = "배당금 지급일자", example = "2023-11-16 00:00:00")

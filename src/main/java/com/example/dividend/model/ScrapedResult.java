@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @Schema(description = "스크랩 데이터")
 public class ScrapedResult {
-
   @Schema(description = "회사 정보", implementation = Company.class)
   private Company company;
 

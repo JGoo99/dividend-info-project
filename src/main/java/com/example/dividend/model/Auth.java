@@ -13,6 +13,7 @@ public class Auth {
   public static class signIn {
     @Schema(description = "회원명", example = "goo")
     private String username;
+
     @Schema(description = "회원 비밀번호", example = "goo123")
     private String password;
   }
@@ -22,8 +23,10 @@ public class Auth {
   public static class signUp {
     @Schema(description = "회원명", example = "goo")
     private String username;
+
     @Schema(description = "회원 비밀번호", example = "goo123")
     private String password;
+
     @Schema(description = "회원 권한", example = "ROLE_READ")
     private List<String> roles;
 
