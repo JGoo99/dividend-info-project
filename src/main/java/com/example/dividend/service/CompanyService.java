@@ -1,5 +1,7 @@
 package com.example.dividend.service;
 
+import com.example.dividend.exception.impl.AlreadyExistCompanyException;
+import com.example.dividend.exception.impl.NotFoundCompanyException;
 import com.example.dividend.model.Company;
 import com.example.dividend.model.ScrapedResult;
 import com.example.dividend.persist.entity.CompanyEntity;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -31,7 +34,7 @@ public class CompanyService {
   public Company save(String ticker) {
     boolean exists = this.companyRepository.existsByTicker(ticker);
     if (exists) {
-      throw new RuntimeException("already exists ticker -> " + ticker);
+      throw new AlreadyExistCompanyException();
     }
     return this.storeCompanyAndDividend(ticker);
   }
@@ -43,7 +46,7 @@ public class CompanyService {
   private Company storeCompanyAndDividend(String ticker) {
     Company company = this.yahooFinanceScraper.scrapCompanyByTicker(ticker);
     if (ObjectUtils.isEmpty(company)) {
-      throw new RuntimeException("failed to scrap company by ticker -> " + ticker);
+      throw new NotFoundCompanyException();
     }
 
     ScrapedResult scrapedResult = this.yahooFinanceScraper.scrap(company);
@@ -55,7 +58,6 @@ public class CompanyService {
         .toList();
 
     this.dividendRepository.saveAll(dividendEntities);
-
     return company;
   }
 
@@ -84,13 +86,13 @@ public class CompanyService {
     this.trie.remove(keyword);
   }
 
+  @Transactional
   public String deleteCompany(String ticker) {
     CompanyEntity companyEntity = this.companyRepository.findByTicker(ticker)
-      .orElseThrow(() -> new RuntimeException("Not Found Company -> " + ticker));
+      .orElseThrow(() -> new NotFoundCompanyException());
 
     this.dividendRepository.deleteAllByCompanyId(companyEntity.getCompanyId());
     this.companyRepository.delete(companyEntity);
-
     this.deleteAutocompleteKeyword(companyEntity.getName());
     return companyEntity.getName();
   }

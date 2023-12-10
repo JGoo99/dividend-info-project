@@ -1,17 +1,47 @@
-### add company
+### [company] get company names by autocomplete
+GET http://localhost:8080/company/autocomplete?keyword=3
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+### [company] search companies with paging
+GET http://localhost:8080/company?size=5&page=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+### [company] add company
 POST http://localhost:8080/company
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "ticker": "NN"
+  "ticker": "MMM"
 }
 
-### get all companies
-GET http://localhost:8080/company?size=5&page=0
-Accept: application/json
+### [company] delete company by ticker
+DELETE http://localhost:8080/company/MMM
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
-### get dividend by company name
-GET http://localhost:8080/finance/dividend/NIKE, Inc.
+### [finance] get dividend by company name
+GET http://localhost:8080/finance/dividend/3M Company
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
-### get company names by autocomplete
-GET http://localhost:8080/company/autocomplete?keyword=A
+### [auth] sign up
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "username": "goo",
+  "password": "123",
+  "roles": ["ROLE_READ", "ROLE_WRITE"]
+}
+
+### [auth] sign in
+POST http://localhost:8080/auth/signin
+Content-Type: application/json
+
+{
+  "username": "goo",
+  "password": "123"
+}

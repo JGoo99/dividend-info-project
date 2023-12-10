@@ -22,10 +22,11 @@ public class FinanceController {
 
   @GetMapping("/dividend/{companyName}")
   @PreAuthorize("hasRole('READ')")
-  @Operation(summary = "get finance data", description = "회사정보와 배당금 정보를 불러온다.")
+  @Operation(summary = "get finance data", description = "회사명을 받아서 해당 회사의 메타 정보와 배당금 정보를 반환한다.")
   public ResponseEntity<?> searchFinance(
     @Schema(name = "회사명", example = "3M Company")
     @PathVariable String companyName) {
+
     var dividend = this.financeService.getDividendByCompanyName(companyName);
     return ResponseEntity.ok(dividend);
   }

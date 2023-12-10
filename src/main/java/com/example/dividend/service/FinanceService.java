@@ -1,5 +1,6 @@
 package com.example.dividend.service;
 
+import com.example.dividend.exception.impl.NotFoundCompanyException;
 import com.example.dividend.model.Company;
 import com.example.dividend.model.Dividend;
 import com.example.dividend.model.ScrapedResult;
@@ -25,8 +26,7 @@ public class FinanceService {
   @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
   public ScrapedResult getDividendByCompanyName(String companyName) {
     CompanyEntity company = companyRepository.findByName(companyName)
-      .orElseThrow(() ->
-        new RuntimeException("Not Found CompanyName -> " + companyName));
+      .orElseThrow(() -> new NotFoundCompanyException());
 
     List<DividendEntity> dividendEntities =
       this.dividendRepository.findByCompanyId(company.getCompanyId());

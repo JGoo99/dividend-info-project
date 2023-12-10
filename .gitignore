@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### token data
+/src/test/http/http-client.private.env.json
+
+### log
+mylog-2023-12-09.0.log.gz
+mylog.log

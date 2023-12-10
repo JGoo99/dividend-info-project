@@ -26,7 +26,7 @@ public class CompanyController {
   private final CacheManager cacheManager;
 
   @GetMapping("/autocomplete")
-  @Operation(summary = "autocomplete search", description = "회사명 자동 완성 검색 기능이다.")
+  @Operation(summary = "autocomplete search", description = "회사명의 자동 완성 검색 기능이다.")
   public ResponseEntity<?> autocomplete(
     @Schema(name = "키워드(접두사)", example = "CO")
     @RequestParam String keyword) {
@@ -36,19 +36,20 @@ public class CompanyController {
     return ResponseEntity.ok(companyNames);
   }
 
-  @GetMapping("/search")
+  @GetMapping
   @PreAuthorize("hasRole('READ')")
-  @Operation(summary = "get company list", description = "회사 정보를 불러온다.")
+  @Operation(summary = "get company list", description = "관리하고있는 모든 회사 정보를 불러온다.")
   public ResponseEntity<?> searchCompany(
     @Schema(name = "페이징", implementation = Pageable.class, example = "?size=5&page=0")
     final Pageable pageable) {
+
     Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
     return ResponseEntity.ok(companies);
   }
 
-  @PostMapping("/add")
+  @PostMapping
   @PreAuthorize("hasRole('WRITE')")
-  @Operation(summary = "add company and dividend data", description = "회사와 배당금 정보를 저장한다.")
+  @Operation(summary = "add company and dividend data", description = "새로운 회사와 배당금 정보를 저장한다.")
   public ResponseEntity<?> addCompany(
     @Schema(name = "회사정보", implementation = Company.class, example = "MMM")
     @RequestBody Company request) {
@@ -69,6 +70,7 @@ public class CompanyController {
   public ResponseEntity<?> deleteCompany(
     @Schema(name = "회사코드", example = "MMM")
     @PathVariable String ticker) {
+
     String companyName = this.companyService.deleteCompany(ticker);
     this.clearFinanceCache(companyName);
     return ResponseEntity.ok(companyName);

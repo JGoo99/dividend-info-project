@@ -29,7 +29,10 @@ public class AuthController {
   public ResponseEntity<?> singUp(
     @Schema(name = "회원가입 입력 정보", implementation = Auth.signUp.class, example = "아이디, 비밀번호")
     @RequestBody Auth.signUp request) {
+
     var member = this.memberService.register(request);
+
+    log.info("new user sign up -> " + request.getUsername());
     return ResponseEntity.ok(member);
   }
 
@@ -38,9 +41,12 @@ public class AuthController {
   public ResponseEntity<?> signIn(
     @Schema(name = "로그인 입력 정보", implementation = Auth.signIn.class, example = "아이디, 비밀번호, 권한")
     @RequestBody Auth.signIn request) {
+
     var member = this.memberService.authenticate(request);
     var token =
       this.tokenProvider.generateToken(request.getUsername(), member.getRoles());
+
+    log.info("user login -> " + request.getUsername());
     return ResponseEntity.ok(token);
   }
 }

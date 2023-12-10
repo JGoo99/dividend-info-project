@@ -1,5 +1,8 @@
 package com.example.dividend.service;
 
+import com.example.dividend.exception.impl.AlreadyExistUserException;
+import com.example.dividend.exception.impl.IncorrectPasswordException;
+import com.example.dividend.exception.impl.NotFoundUserException;
 import com.example.dividend.model.Auth;
 import com.example.dividend.persist.entity.MemberEntity;
 import com.example.dividend.persist.repository.MemberRepository;
@@ -22,16 +25,15 @@ public class MemberService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return this.memberRepository.findByUsername(username)
-      .orElseThrow(() -> new UsernameNotFoundException("Not Found User"));
+      .orElseThrow(() -> new NotFoundUserException());
   }
 
   public MemberEntity register(Auth.signUp member) {
     boolean exists = this.memberRepository.existsByUsername(member.getUsername());
 
     if (exists) {
-      throw new RuntimeException("user already in use -> " + member.getUsername());
+      throw new AlreadyExistUserException();
     }
-
     member.setPassword(this.passwordEncoder.encode(member.getPassword()));
 
     return this.memberRepository.save(member.toEntity());
@@ -39,12 +41,11 @@ public class MemberService implements UserDetailsService {
 
   public MemberEntity authenticate(Auth.signIn member) {
     var user = this.memberRepository.findByUsername(member.getUsername())
-      .orElseThrow(() -> new RuntimeException("Not Found ID"));
+      .orElseThrow(() -> new NotFoundUserException());
 
     if (!this.passwordEncoder.matches(member.getPassword(), user.getPassword())) {
-      throw new RuntimeException("unMatch Password");
+      throw new IncorrectPasswordException();
     }
-
     return user;
   }
 }
