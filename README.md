@@ -83,9 +83,3 @@
 
 - GET - finance/dividend/{companyName}
   - 회사 이름을 받아서 해당 회사의 메타 정보와 배당금 정보를 반환한다.
-
-<br/>
-
-## 정보
-
-[노션 바로가기](www.notion.so/goo99)
